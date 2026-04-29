@@ -64,6 +64,11 @@ export type AppConfig = {
     stable_frames: number;
     timeout_ms: number;
     selected_part_type: string;
+    part_types?: Array<{
+      id: string;
+      name: string;
+      image: string;
+    }>;
   };
   kiosk: {
     browser: string;

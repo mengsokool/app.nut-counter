@@ -10,17 +10,23 @@ import { useEffect, useMemo, useState } from "react";
 import {
   type SystemStatus,
   fetchStatus,
+  fetchConfig,
   powerOff,
   selectPartType,
 } from "../../api/client";
-import { FASTENER_TYPES } from "../../domain/fasteners";
+
 import OperatorPanel from "../operator/OperatorPanel";
 import CameraFeed from "./CameraFeed";
 
+export type FastenerType = {
+  id: string;
+  name: string;
+  image: string;
+};
+
 export default function KioskPage({ isLoading }: { isLoading: boolean }) {
-  const [selectedFastenerId, setSelectedFastenerId] = useState(
-    FASTENER_TYPES[0]?.id ?? "",
-  );
+  const [partTypes, setPartTypes] = useState<FastenerType[]>([]);
+  const [selectedFastenerId, setSelectedFastenerId] = useState("");
   const [isPoweringOff, setIsPoweringOff] = useState(false);
   const [showConfirmShutdown, setShowConfirmShutdown] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
@@ -33,10 +39,24 @@ export default function KioskPage({ isLoading }: { isLoading: boolean }) {
 
   const selectedFastener = useMemo(
     () =>
-      FASTENER_TYPES.find((item) => item.id === selectedFastenerId) ??
-      FASTENER_TYPES[0],
-    [selectedFastenerId],
+      partTypes.find((item) => item.id === selectedFastenerId) ??
+      partTypes[0],
+    [selectedFastenerId, partTypes],
   );
+
+  useEffect(() => {
+    async function init() {
+      try {
+        const config = await fetchConfig();
+        if (config.counting?.part_types) {
+          setPartTypes(config.counting.part_types);
+        }
+      } catch (err) {
+        console.error("Failed to fetch part types", err);
+      }
+    }
+    void init();
+  }, []);
 
   useEffect(() => {
     let es: EventSource | null = null;
@@ -57,7 +77,7 @@ export default function KioskPage({ isLoading }: { isLoading: boolean }) {
       probeDelay = 500;
       setSystemStatus(status);
       setDisplayCount(status.count.toString().padStart(3, "0"));
-      if (FASTENER_TYPES.some((item) => item.id === status.selectedPartType)) {
+      if (status.selectedPartType) {
         setSelectedFastenerId(status.selectedPartType);
       }
     }
@@ -227,49 +247,48 @@ export default function KioskPage({ isLoading }: { isLoading: boolean }) {
             </div>
           )}
 
-          <div
-            className="grid flex-1"
-            style={{
-              gridTemplateRows: `repeat(${FASTENER_TYPES.length}, minmax(0, 1fr))`,
-            }}
-          >
-            {FASTENER_TYPES.map((item) => {
-              const isActive = item.id === selectedFastenerId;
+            <div
+              className="grid flex-1"
+              style={{
+                gridTemplateRows: `repeat(${partTypes.length || 1}, minmax(0, 1fr))`,
+              }}
+            >
+              {partTypes.map((item) => {
+                const isActive = item.id === selectedFastenerId;
 
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => void handleSelectFastener(item.id)}
-                  aria-pressed={isActive}
-                  className={`grid min-h-0 grid-rows-[1fr_auto] border-b border-[var(--machine-line)] px-4 py-5 text-left outline-none transition-colors duration-150 focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[var(--machine-accent)] ${
-                    isActive
-                      ? "bg-[var(--machine-accent)] text-[var(--machine-ink)]"
-                      : "bg-[var(--machine-panel)] text-[var(--machine-ink)] hover:bg-[var(--machine-panel-strong)] active:bg-[var(--machine-panel-pressed)]"
-                  }`}
-                >
-                  <div
-                    className={`relative mx-auto aspect-square w-full max-w-[9.5rem] ${
-                      isActive ? "opacity-100" : "opacity-85"
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => void handleSelectFastener(item.id)}
+                    aria-pressed={isActive}
+                    className={`grid min-h-0 grid-rows-[1fr_auto] border-b border-[var(--machine-line)] px-4 py-5 text-left outline-none transition-colors duration-150 focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[var(--machine-accent)] ${
+                      isActive
+                        ? "bg-[var(--machine-accent)] text-[var(--machine-ink)]"
+                        : "bg-[var(--machine-panel)] text-[var(--machine-ink)] hover:bg-[var(--machine-panel-strong)] active:bg-[var(--machine-panel-pressed)]"
                     }`}
                   >
-                    <img
-                      src={item.image}
-                      alt=""
-                      sizes="(max-width: 1024px) 8rem, 9rem"
-                      className={`h-full w-full object-contain ${
-                        isActive ? "" : "mix-blend-multiply"
+                    <div
+                      className={`relative mx-auto aspect-square w-full max-w-[9.5rem] ${
+                        isActive ? "opacity-100" : "opacity-85"
                       }`}
-                    />
-                  </div>
+                    >
+                      <img
+                        src={item.image}
+                        alt=""
+                        className={`h-full w-full object-contain ${
+                          isActive ? "" : "mix-blend-multiply"
+                        }`}
+                      />
+                    </div>
 
-                  <span className="text-center text-lg font-bold leading-tight text-[var(--machine-ink)]">
-                    {item.name}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                    <span className="text-center text-lg font-bold leading-tight text-[var(--machine-ink)]">
+                      {item.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
         </aside>
 
         <section className="min-w-0 bg-[var(--machine-dark)]">

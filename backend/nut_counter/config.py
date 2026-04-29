@@ -58,10 +58,23 @@ class ModelConfig:
 
 
 @dataclass(frozen=True)
+class PartType:
+    id: string
+    name: string
+    image: string
+
+
+@dataclass(frozen=True)
 class CountingConfig:
     stable_frames: int = 5
     timeout_ms: int = 2500
     selected_part_type: str = "nut"
+    part_types: list[PartType] = field(
+        default_factory=lambda: [
+            PartType(id="nut", name="Nut (น็อต)", image="/Nut.png"),
+            PartType(id="washer", name="Washer (แหวนรอง)", image="/Washer.png"),
+        ]
+    )
 
 
 @dataclass(frozen=True)
@@ -118,11 +131,24 @@ def dataclass_kwargs(dataclass_type: type[Any], raw: dict[str, Any]) -> dict[str
 
 
 def parse_config(raw: dict[str, Any]) -> AppConfig:
+    counting_raw = raw.get("counting", {})
+    part_types_raw = counting_raw.get("part_types", [])
+    part_types = [
+        PartType(**dataclass_kwargs(PartType, p)) for p in part_types_raw
+    ] if part_types_raw else CountingConfig().part_types
+
+    # Ensure we don't pass part_types twice to CountingConfig
+    counting_kwargs = dataclass_kwargs(CountingConfig, counting_raw)
+    counting_kwargs.pop("part_types", None)
+
     config = AppConfig(
         gpio=GpioConfig(**dataclass_kwargs(GpioConfig, raw.get("gpio", {}))),
         camera=CameraConfig(**dataclass_kwargs(CameraConfig, raw.get("camera", {}))),
         model=ModelConfig(**dataclass_kwargs(ModelConfig, raw.get("model", {}))),
-        counting=CountingConfig(**dataclass_kwargs(CountingConfig, raw.get("counting", {}))),
+        counting=CountingConfig(
+            **counting_kwargs,
+            part_types=part_types,
+        ),
         kiosk=KioskConfig(**dataclass_kwargs(KioskConfig, raw.get("kiosk", {}))),
         safe_mode=bool(raw.get("safe_mode", True)),
     )
