@@ -202,8 +202,7 @@ def stream_install(keys: list[str], sudo_password: str | None) -> Iterator[str]:
         return
 
     if _apt_is_locked():
-        yield f"{ERROR_PREFIX}Package manager is busy (another process holds the lock). Wait a moment and try again."
-        return
+        yield "System is currently busy (apt is locked). Waiting up to 2 minutes..."
 
     # ── Build command ─────────────────────────────────────────────────────────
     has_sudo = bool(shutil.which("sudo"))
@@ -216,7 +215,11 @@ def stream_install(keys: list[str], sudo_password: str | None) -> Iterator[str]:
             # NOPASSWD path — fail fast if a password is actually required
             cmd = ["sudo", "-n", "--"]
 
-    cmd += ["apt-get", "install", "-y", "--no-install-recommends", *packages]
+    cmd += [
+        "apt-get",
+        "-o", "DPkg::Lock::Timeout=120",
+        "install", "-y", "--no-install-recommends", *packages
+    ]
 
     env = {
         **os.environ,
