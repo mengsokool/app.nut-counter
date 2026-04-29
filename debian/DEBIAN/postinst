@@ -14,6 +14,11 @@ done
 install -d -o nut-counter -g nut-counter /etc/nut-counter /var/lib/nut-counter/models /var/log/nut-counter
 install -d -o nut-counter -g nut-counter /var/lib/nut-counter/firefox-profile
 install -m 0644 -o nut-counter -g nut-counter /opt/nut-counter/config/firefox-user.js /var/lib/nut-counter/firefox-profile/user.js
+
+# Enterprise policies to force-disable password dialogs and other distractions
+install -d /etc/firefox-esr/policies
+install -m 0644 /opt/nut-counter/config/firefox-policies.json /etc/firefox-esr/policies/policies.json
+
 chown -R nut-counter:nut-counter /var/lib/nut-counter
 
 if [ -d /etc/sudoers.d ]; then

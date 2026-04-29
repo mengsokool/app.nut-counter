@@ -1,0 +1,18 @@
+{
+  "policies": {
+    "DisablePasswordReveal": true,
+    "PasswordManagerEnabled": false,
+    "OfferToSaveLogins": false,
+    "OfferToSaveLoginsDefault": false,
+    "DisableFormHistory": true,
+    "DisableFirefoxAccounts": true,
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "DisablePocket": true,
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "DontCheckDefaultBrowser": true,
+    "DisplayBookmarksToolbar": "never",
+    "DisplayMenuBar": "never"
+  }
+}
