@@ -1,6 +1,6 @@
 [Unit]
 Description=Nut Counter Firefox ESR kiosk
-After=nut-counter-backend.service systemd-logind.service systemd-user-sessions.service graphical.target
+After=nut-counter-backend.service systemd-logind.service systemd-user-sessions.service graphical.target multi-user.target
 Wants=systemd-logind.service
 Requires=nut-counter-backend.service
 
@@ -8,8 +8,10 @@ Requires=nut-counter-backend.service
 Type=simple
 User=nut-counter
 Group=nut-counter
+PAMName=login
 Environment=HOME=/var/lib/nut-counter
 Environment=MOZ_ENABLE_WAYLAND=1
+Environment=WLR_LIBINPUT_NO_DEVICES=1
 
 # TTY settings for Wayland compositor (cage)
 StandardInput=tty
@@ -22,7 +24,7 @@ TTYVTDisallocate=yes
 ExecStartPre=+/usr/bin/chvt 7
 
 ExecStartPre=/opt/nut-counter/scripts/wait-for-backend.sh http://127.0.0.1:8787/api/status
-ExecStart=/usr/bin/cage -s -- /usr/bin/firefox-esr --kiosk http://127.0.0.1:8787 --profile /var/lib/nut-counter/firefox-profile
+ExecStart=/usr/bin/cage -d -s -- /usr/bin/firefox-esr --kiosk http://127.0.0.1:8787 --profile /var/lib/nut-counter/firefox-profile
 Restart=always
 RestartSec=3
 

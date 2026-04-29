@@ -25,8 +25,9 @@ install -m 0644 /opt/nut-counter/systemd/nut-counter-backend.service /etc/system
 install -m 0644 /opt/nut-counter/systemd/nut-counter-kiosk.service /etc/systemd/system/nut-counter-kiosk.service
 
 systemctl daemon-reload
-systemctl enable nut-counter-backend.service
-systemctl enable nut-counter-kiosk.service || true
+systemctl reenable nut-counter-backend.service || true
+systemctl reenable nut-counter-kiosk.service || true
 systemctl restart nut-counter-backend.service || true
+systemctl restart nut-counter-kiosk.service || true
 
 exit 0
