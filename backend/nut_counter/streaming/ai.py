@@ -6,6 +6,8 @@ to subscribers (SSE consumers in `server.py`, plus the count_once aggregator).
 
 Pacing: capped at `target_fps` (default 5). If the engine takes longer than
 the budget, the next iteration starts immediately — we never queue stale work.
+When `should_process` returns false, the worker idles without invoking the
+inference engine.
 """
 
 from __future__ import annotations
@@ -129,13 +131,17 @@ class AIWorker:
         engine: "InferenceEngine",
         get_part_type: Callable[[], str],
         *,
+        should_process: Callable[[], bool] | None = None,
         target_fps: float = 5.0,
+        idle_poll_interval: float = 0.25,
         input_size: int = AI_INPUT_SIZE,
     ) -> None:
         self.frame_bus = frame_bus
         self.engine = engine
         self.get_part_type = get_part_type
+        self.should_process = should_process or (lambda: True)
         self.target_fps = target_fps
+        self.idle_poll_interval = idle_poll_interval
         self.input_size = input_size
         self.detections = DetectionBus()
         self._closed = False
@@ -164,6 +170,10 @@ class AIWorker:
         budget = 1.0 / self.target_fps if self.target_fps > 0 else 0.2
 
         while not self._closed:
+            if not self.should_process():
+                time.sleep(self.idle_poll_interval)
+                continue
+
             cycle_start = time.monotonic()
             frame = self.frame_bus.wait_new(last_seq, timeout=2.0)
             if frame is None:

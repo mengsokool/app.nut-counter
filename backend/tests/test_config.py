@@ -31,6 +31,10 @@ class ConfigTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_config({"camera": {"source": "avfoundation"}})
 
+    def test_rejects_invalid_idle_camera_fps(self) -> None:
+        with self.assertRaises(ValueError):
+            parse_config({"camera": {"fps": 10, "idle_fps": 20}})
+
     def test_ignores_unknown_config_keys_for_forward_compatibility(self) -> None:
         config = parse_config(
             {

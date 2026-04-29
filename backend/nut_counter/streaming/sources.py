@@ -61,7 +61,7 @@ def ffmpeg_flip_filter(config: CameraConfig) -> str | None:
     return ",".join(filters) if filters else None
 
 
-def _ffmpeg_square_filter(config: CameraConfig) -> str:
+def _ffmpeg_square_filter(config: CameraConfig, fps: int | None = None) -> str:
     # Square-crop center, then resize to the configured side. We use bilinear
     # (default) and clamp `force_original_aspect_ratio=disable` is implicit
     # because the crop already made the input square. Avoids the upscale-from-
@@ -76,7 +76,7 @@ def _ffmpeg_square_filter(config: CameraConfig) -> str:
     flip = ffmpeg_flip_filter(config)
     if flip:
         parts.append(flip)
-    parts.append("fps=30")
+    parts.append(f"fps={fps or config.fps}")
     return ",".join(parts)
 
 
@@ -255,6 +255,9 @@ class FrameSource(ABC):
     @abstractmethod
     def close(self) -> None: ...
 
+    def set_idle_mode(self, idle: bool) -> None:
+        return
+
     def capture_jpeg(self, quality: int = 85) -> bytes:
         """Convenience: encode the latest frame to JPEG. Returns b'' if no frame yet."""
         frame = self.bus.latest()
@@ -278,6 +281,8 @@ class _FFmpegRawSource(FrameSource):
     def __init__(self, config: CameraConfig) -> None:
         super().__init__(config)
         self._closed = False
+        self._idle = False
+        self._mode_lock = threading.Lock()
         self._proc: subprocess.Popen | None = None  # type: ignore[type-arg]
         self._thread: threading.Thread | None = None
         self._np = _try_numpy()
@@ -308,7 +313,19 @@ class _FFmpegRawSource(FrameSource):
         return f"{self.label} unavailable"
 
     @abstractmethod
-    def _ffmpeg_command(self) -> list[str]: ...
+    def _ffmpeg_command(self, fps: int) -> list[str]: ...
+
+    def _current_fps(self) -> int:
+        with self._mode_lock:
+            return self.config.idle_fps if self._idle else self.config.fps
+
+    def set_idle_mode(self, idle: bool) -> None:
+        with self._mode_lock:
+            if self._idle == idle:
+                return
+            self._idle = idle
+            fps = self.config.idle_fps if idle else self.config.fps
+        print(f"[{self.label}] {'idle' if idle else 'active'} capture {fps} fps", flush=True)
 
     # main loop --------------------------------------------------------------
     def _run(self) -> None:
@@ -323,12 +340,13 @@ class _FFmpegRawSource(FrameSource):
         backoff = 0.5
         fps_count = 0
         fps_started = time.monotonic()
+        next_capture = 0.0
         while not self._closed:
             frames_seen = 0
             stderr_tail: list[str] = []
             try:
                 self._proc = subprocess.Popen(
-                    self._ffmpeg_command(),
+                    self._ffmpeg_command(self.config.fps),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     bufsize=0,
@@ -352,6 +370,14 @@ class _FFmpegRawSource(FrameSource):
                     while len(buf) >= bytes_per_frame:
                         raw = bytes(buf[:bytes_per_frame])
                         del buf[:bytes_per_frame]
+
+                        current_fps = self._current_fps()
+                        if current_fps < self.config.fps:
+                            now = time.monotonic()
+                            if now < next_capture:
+                                continue
+                            next_capture = now + (1.0 / current_fps)
+
                         # Make a writable copy so downstream consumers
                         # (cv2.resize, av.VideoFrame.from_ndarray) never get
                         # a read-only view of a transient bytes buffer.
@@ -442,16 +468,16 @@ class MockFrameSource(_FFmpegRawSource):
             self.status = "mock"
             self.detail = "mock test pattern"
 
-    def _ffmpeg_command(self) -> list[str]:
+    def _ffmpeg_command(self, fps: int) -> list[str]:
         side, _ = square_frame_size(self.config)
         flip = ffmpeg_flip_filter(self.config)
         vf = ["-vf", flip] if flip else []
         return [
             "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error",
             "-f", "lavfi",
-            "-i", f"testsrc=size={side}x{side}:rate=30",
+            "-i", f"testsrc=size={side}x{side}:rate={fps}",
             *vf,
-            "-r", "30",
+            "-r", str(fps),
             "-pix_fmt", "bgr24",
             "-f", "rawvideo",
             "pipe:1",
@@ -467,14 +493,14 @@ class V4L2FrameSource(_FFmpegRawSource):
     def _missing_detail(self) -> str:
         return f"v4l2 device not found: {self.config.device or '(empty)'}"
 
-    def _ffmpeg_command(self) -> list[str]:
+    def _ffmpeg_command(self, fps: int) -> list[str]:
         return [
             "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error",
             "-fflags", "nobuffer", "-flags", "low_delay",
-            "-f", "v4l2", "-framerate", "30",
+            "-f", "v4l2", "-framerate", str(fps),
             "-i", self.config.device,
-            "-vf", _ffmpeg_square_filter(self.config),
-            "-r", "30",
+            "-vf", _ffmpeg_square_filter(self.config, fps),
+            "-r", str(fps),
             "-pix_fmt", "bgr24",
             "-f", "rawvideo",
             "pipe:1",
@@ -490,16 +516,16 @@ class AVFoundationFrameSource(_FFmpegRawSource):
     def _missing_detail(self) -> str:
         return "avfoundation device index not configured"
 
-    def _ffmpeg_command(self) -> list[str]:
+    def _ffmpeg_command(self, fps: int) -> list[str]:
         return [
             "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error",
             "-fflags", "nobuffer", "-flags", "low_delay",
             "-f", "avfoundation",
             "-pixel_format", "nv12",
-            "-framerate", "30",
+            "-framerate", str(fps),
             "-i", f"{self.config.device}:none",
-            "-vf", _ffmpeg_square_filter(self.config),
-            "-r", "30",
+            "-vf", _ffmpeg_square_filter(self.config, fps),
+            "-r", str(fps),
             "-pix_fmt", "bgr24",
             "-f", "rawvideo",
             "pipe:1",
@@ -518,6 +544,8 @@ class PiCameraFrameSource(FrameSource):
         self._np = _try_numpy()
         self._camera: Any = None
         self._closed = False
+        self._idle = False
+        self._mode_lock = threading.Lock()
         self._thread: threading.Thread | None = None
 
         if self._np is None:
@@ -559,11 +587,20 @@ class PiCameraFrameSource(FrameSource):
         np = self._np
         assert np is not None
         camera = self._camera
+        next_capture = 0.0
         while not self._closed:
             try:
                 arr = camera.capture_array("main")
                 if arr is None:
                     continue
+
+                current_fps = self._current_fps()
+                if current_fps < self.config.fps:
+                    now = time.monotonic()
+                    if now < next_capture:
+                        continue
+                    next_capture = now + (1.0 / current_fps)
+
                 # picamera2 with format="BGR888" yields BGR; if shape isn't 3-channel
                 # something unexpected happened — drop the frame.
                 if arr.ndim != 3 or arr.shape[2] != 3:
@@ -573,6 +610,14 @@ class PiCameraFrameSource(FrameSource):
                 self.status = "error"
                 self.detail = str(error)
                 time.sleep(0.5)
+
+    def _current_fps(self) -> int:
+        with self._mode_lock:
+            return self.config.idle_fps if self._idle else self.config.fps
+
+    def set_idle_mode(self, idle: bool) -> None:
+        with self._mode_lock:
+            self._idle = idle
 
     def close(self) -> None:
         self._closed = True

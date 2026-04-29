@@ -38,6 +38,8 @@ class CameraConfig:
     device: str = ""
     width: int = 1280
     height: int = 1280
+    fps: int = 30
+    idle_fps: int = 5
     warmup_frames: int = 5
     exposure_mode: str = "auto"
     flip_horizontal: bool = False
@@ -135,6 +137,10 @@ def validate_config(config: AppConfig) -> None:
         raise ValueError("GPIO debounce_ms must be between 0 and 5000")
     if config.camera.width < 320 or config.camera.height < 240:
         raise ValueError("Camera resolution is too small")
+    if config.camera.fps < 1 or config.camera.fps > 60:
+        raise ValueError("Camera fps must be between 1 and 60")
+    if config.camera.idle_fps < 1 or config.camera.idle_fps > config.camera.fps:
+        raise ValueError("Camera idle_fps must be between 1 and camera fps")
     if config.camera.source not in {"auto", "mock", "picamera2", "v4l2", "avfoundation"}:
         raise ValueError("Camera source must be auto, mock, picamera2, v4l2, or avfoundation")
     if config.camera.source in {"v4l2", "avfoundation"} and not config.camera.device:

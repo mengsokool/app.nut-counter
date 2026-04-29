@@ -10,6 +10,8 @@
     "device": "",
     "width": 1280,
     "height": 1280,
+    "fps": 30,
+    "idle_fps": 5,
     "warmup_frames": 5,
     "exposure_mode": "auto",
     "flip_horizontal": false,

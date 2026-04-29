@@ -78,6 +78,7 @@ class NutCounterRuntime:
             frame_bus=self.hardware.frame_source.bus,
             engine=self.hardware.inference,
             get_part_type=lambda: self.config.counting.selected_part_type,
+            should_process=lambda: self.status()["trayPresent"],
             target_fps=5.0,
         )
         self.ai_worker.start()
@@ -191,6 +192,7 @@ class NutCounterRuntime:
             frame_bus=self.hardware.frame_source.bus,
             engine=self.hardware.inference,
             get_part_type=lambda: self.config.counting.selected_part_type,
+            should_process=lambda: self.status()["trayPresent"],
             target_fps=5.0,
         )
         self.ai_worker.start()
@@ -298,6 +300,7 @@ class NutCounterRuntime:
                 if self._tray_override is not None
                 else self.hardware.gpio.read_tray_present()
             )
+            self.hardware.frame_source.set_idle_mode(not tray_present)
             latest_detection = self.ai_worker.detections.latest()
             with self._lock:
                 prev = self.state.as_dict()
