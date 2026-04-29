@@ -10,6 +10,7 @@ const eslintConfig = defineConfig([
     ".claude/**",
     "dist/**",
     "build/**",
+    "config/**",
     "coverage/**",
   ]),
   js.configs.recommended,
