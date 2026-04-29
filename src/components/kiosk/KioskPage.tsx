@@ -274,7 +274,7 @@ export default function KioskPage({ isLoading }: { isLoading: boolean }) {
 
         <section className="min-w-0 bg-[var(--machine-dark)]">
           <div className="relative h-svh w-full overflow-hidden bg-[var(--machine-dark)]">
-            <CameraFeed />
+            <CameraFeed trayPresent={systemStatus?.trayPresent ?? false} />
           </div>
         </section>
 

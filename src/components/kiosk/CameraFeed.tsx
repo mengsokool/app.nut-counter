@@ -7,7 +7,7 @@ type CameraState = "loading" | "ready" | "error";
 
 const RETRY_DELAYS_MS = [500, 1000, 2000, 5000];
 
-export default function CameraFeed() {
+export default function CameraFeed({ trayPresent }: { trayPresent: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const retryCountRef = useRef(0);
@@ -16,6 +16,13 @@ export default function CameraFeed() {
   const [errorMsg, setErrorMsg] = useState("กำลังเปิดกล้อง");
   const [sessionId, setSessionId] = useState(0);
   const detectionsRef = useRef<Detection[]>([]);
+
+  // --- Clear detections on tray removed --------------------------------------
+  useEffect(() => {
+    if (!trayPresent) {
+      detectionsRef.current = [];
+    }
+  }, [trayPresent]);
 
   // --- WebRTC video stream -------------------------------------------------
   useEffect(() => {
