@@ -1,25 +1,6 @@
 #!/usr/bin/env sh
 set -eu
 
-if command -v apt-get >/dev/null 2>&1; then
-  apt-get update
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    python3 \
-    curl \
-    firefox-esr \
-    rpicam-apps \
-    python3-picamera2 \
-    python3-aiortc \
-    python3-av \
-    python3-gpiozero \
-    python3-lgpio \
-    python3-numpy || true
-
-  DEBIAN_FRONTEND=noninteractive apt-get install -y python3-onnxruntime || true
-
-  DEBIAN_FRONTEND=noninteractive apt-get install -y dkms hailo-all || true
-fi
-
 if ! id nut-counter >/dev/null 2>&1; then
   useradd --system --home /var/lib/nut-counter --shell /usr/sbin/nologin nut-counter
 fi
