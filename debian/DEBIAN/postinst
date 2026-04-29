@@ -13,6 +13,7 @@ done
 
 install -d -o nut-counter -g nut-counter /etc/nut-counter /var/lib/nut-counter/models /var/log/nut-counter
 install -d -o nut-counter -g nut-counter /var/lib/nut-counter/firefox-profile
+install -m 0644 -o nut-counter -g nut-counter /opt/nut-counter/config/firefox-user.js /var/lib/nut-counter/firefox-profile/user.js
 chown -R nut-counter:nut-counter /var/lib/nut-counter
 
 if [ -d /etc/sudoers.d ]; then
