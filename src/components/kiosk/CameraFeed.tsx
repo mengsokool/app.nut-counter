@@ -175,7 +175,7 @@ export default function CameraFeed({ trayPresent }: { trayPresent: boolean }) {
       source.close();
       detectionsRef.current = [];
     };
-  }, []);
+  }, [sessionId]);
 
   // --- Overlay render loop -------------------------------------------------
   useEffect(() => {
