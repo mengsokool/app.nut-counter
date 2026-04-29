@@ -1,6 +1,6 @@
 {
   "name": "app.nut-counter",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0",
