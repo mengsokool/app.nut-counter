@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+set -eu
+
+if command -v apt-get >/dev/null 2>&1; then
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    python3 \
+    curl \
+    firefox-esr \
+    rpicam-apps \
+    python3-picamera2 \
+    python3-aiortc \
+    python3-av \
+    python3-gpiozero \
+    python3-lgpio \
+    python3-numpy || true
+
+  DEBIAN_FRONTEND=noninteractive apt-get install -y python3-onnxruntime || true
+
+  DEBIAN_FRONTEND=noninteractive apt-get install -y dkms hailo-all || true
+fi
+
+if ! id nut-counter >/dev/null 2>&1; then
+  useradd --system --home /var/lib/nut-counter --shell /usr/sbin/nologin nut-counter
+fi
+
+for group_name in gpio video render input; do
+  if getent group "$group_name" >/dev/null 2>&1; then
+    usermod -aG "$group_name" nut-counter || true
+  fi
+done
+
+install -d -o nut-counter -g nut-counter /etc/nut-counter /var/lib/nut-counter/models /var/log/nut-counter
+install -d -o nut-counter -g nut-counter /var/lib/nut-counter/firefox-profile
+
+if [ ! -f /etc/nut-counter/config.json ]; then
+  install -m 0640 -o nut-counter -g nut-counter /opt/nut-counter/config/default-config.json /etc/nut-counter/config.json
+else
+  chown nut-counter:nut-counter /etc/nut-counter/config.json || true
+  chmod 0640 /etc/nut-counter/config.json || true
+fi
+
+install -m 0644 /opt/nut-counter/systemd/nut-counter-backend.service /etc/systemd/system/nut-counter-backend.service
+install -m 0644 /opt/nut-counter/systemd/nut-counter-kiosk.service /etc/systemd/system/nut-counter-kiosk.service
+
+systemctl daemon-reload
+systemctl enable nut-counter-backend.service
+systemctl enable nut-counter-kiosk.service || true
+systemctl restart nut-counter-backend.service || true
+
+exit 0

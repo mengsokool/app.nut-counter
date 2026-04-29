@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-04-29T00:00:00Z",
+  "title": "Design System: Nut Counter",
+  "extensions": {
+    "colorMeta": {
+      "counting-light": {
+        "role": "primary",
+        "displayName": "Counting Light",
+        "canonical": "oklch(0.89 0.19 126)",
+        "tonalRamp": [
+          "oklch(0.15 0.06 126)",
+          "oklch(0.25 0.10 126)",
+          "oklch(0.37 0.14 126)",
+          "oklch(0.50 0.17 126)",
+          "oklch(0.63 0.19 126)",
+          "oklch(0.75 0.19 126)",
+          "oklch(0.89 0.19 126)",
+          "oklch(0.95 0.09 126)"
+        ]
+      },
+      "counting-light-pressed": {
+        "role": "primary",
+        "displayName": "Counting Light Pressed",
+        "canonical": "oklch(0.82 0.18 126)",
+        "tonalRamp": [
+          "oklch(0.15 0.06 126)",
+          "oklch(0.25 0.10 126)",
+          "oklch(0.37 0.14 126)",
+          "oklch(0.50 0.17 126)",
+          "oklch(0.63 0.19 126)",
+          "oklch(0.75 0.19 126)",
+          "oklch(0.82 0.18 126)",
+          "oklch(0.95 0.09 126)"
+        ]
+      },
+      "verification-green": {
+        "role": "secondary",
+        "displayName": "Verification Green",
+        "canonical": "oklch(0.67 0.062 123)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 123)",
+          "oklch(0.27 0.04 123)",
+          "oklch(0.39 0.05 123)",
+          "oklch(0.52 0.06 123)",
+          "oklch(0.67 0.062 123)",
+          "oklch(0.76 0.05 123)",
+          "oklch(0.85 0.035 123)",
+          "oklch(0.94 0.018 123)"
+        ]
+      },
+      "factory-beige-light": {
+        "role": "neutral",
+        "displayName": "Factory Beige Light",
+        "canonical": "oklch(0.96 0.009 85)",
+        "tonalRamp": [
+          "oklch(0.20 0.010 85)",
+          "oklch(0.32 0.012 85)",
+          "oklch(0.45 0.015 85)",
+          "oklch(0.58 0.018 85)",
+          "oklch(0.68 0.020 85)",
+          "oklch(0.78 0.019 86)",
+          "oklch(0.88 0.014 85)",
+          "oklch(0.96 0.009 85)"
+        ]
+      },
+      "factory-beige-panel": {
+        "role": "neutral",
+        "displayName": "Factory Beige Panel",
+        "canonical": "oklch(0.91 0.018 85)",
+        "tonalRamp": [
+          "oklch(0.20 0.010 85)",
+          "oklch(0.32 0.012 85)",
+          "oklch(0.45 0.015 85)",
+          "oklch(0.58 0.018 85)",
+          "oklch(0.68 0.020 85)",
+          "oklch(0.78 0.019 86)",
+          "oklch(0.86 0.022 84)",
+          "oklch(0.91 0.018 85)"
+        ]
+      },
+      "factory-beige-shell": {
+        "role": "neutral",
+        "displayName": "Factory Beige Shell",
+        "canonical": "oklch(0.78 0.019 86)",
+        "tonalRamp": [
+          "oklch(0.20 0.010 85)",
+          "oklch(0.32 0.012 85)",
+          "oklch(0.45 0.015 85)",
+          "oklch(0.58 0.018 85)",
+          "oklch(0.68 0.020 85)",
+          "oklch(0.78 0.019 86)",
+          "oklch(0.86 0.022 84)",
+          "oklch(0.96 0.009 85)"
+        ]
+      },
+      "machine-seam": {
+        "role": "neutral",
+        "displayName": "Machine Seam",
+        "canonical": "oklch(0.68 0.024 82)",
+        "tonalRamp": [
+          "oklch(0.20 0.012 82)",
+          "oklch(0.32 0.016 82)",
+          "oklch(0.45 0.020 82)",
+          "oklch(0.57 0.022 82)",
+          "oklch(0.68 0.024 82)",
+          "oklch(0.76 0.020 82)",
+          "oklch(0.85 0.014 82)",
+          "oklch(0.94 0.008 82)"
+        ]
+      },
+      "dead-label": {
+        "role": "neutral",
+        "displayName": "Dead Label",
+        "canonical": "oklch(0.44 0.022 78)",
+        "tonalRamp": [
+          "oklch(0.15 0.006 80)",
+          "oklch(0.25 0.010 80)",
+          "oklch(0.35 0.015 80)",
+          "oklch(0.44 0.022 78)",
+          "oklch(0.56 0.020 78)",
+          "oklch(0.68 0.016 80)",
+          "oklch(0.80 0.012 80)",
+          "oklch(0.93 0.006 80)"
+        ]
+      },
+      "control-black": {
+        "role": "neutral",
+        "displayName": "Control Black",
+        "canonical": "oklch(0.17 0.006 80)",
+        "tonalRamp": [
+          "oklch(0.10 0.004 80)",
+          "oklch(0.17 0.006 80)",
+          "oklch(0.27 0.008 80)",
+          "oklch(0.38 0.010 80)",
+          "oklch(0.50 0.012 80)",
+          "oklch(0.63 0.014 80)",
+          "oklch(0.76 0.010 80)",
+          "oklch(0.89 0.006 80)"
+        ]
+      },
+      "display-void": {
+        "role": "neutral",
+        "displayName": "Display Void",
+        "canonical": "oklch(0.14 0.006 95)",
+        "tonalRamp": [
+          "oklch(0.08 0.003 95)",
+          "oklch(0.14 0.006 95)",
+          "oklch(0.20 0.008 95)",
+          "oklch(0.30 0.010 95)",
+          "oklch(0.42 0.012 95)",
+          "oklch(0.56 0.012 95)",
+          "oklch(0.71 0.010 95)",
+          "oklch(0.86 0.007 95)"
+        ]
+      },
+      "fault-red": {
+        "role": "danger",
+        "displayName": "Fault Red",
+        "canonical": "oklch(0.45 0.14 28)",
+        "tonalRamp": [
+          "oklch(0.15 0.05 28)",
+          "oklch(0.24 0.08 28)",
+          "oklch(0.34 0.11 28)",
+          "oklch(0.45 0.14 28)",
+          "oklch(0.55 0.16 28)",
+          "oklch(0.66 0.14 28)",
+          "oklch(0.76 0.09 28)",
+          "oklch(0.88 0.046 33)"
+        ]
+      },
+      "fault-red-soft": {
+        "role": "danger",
+        "displayName": "Fault Red Soft",
+        "canonical": "oklch(0.88 0.046 33)",
+        "tonalRamp": [
+          "oklch(0.15 0.05 28)",
+          "oklch(0.24 0.08 28)",
+          "oklch(0.34 0.11 28)",
+          "oklch(0.45 0.14 28)",
+          "oklch(0.58 0.18 28)",
+          "oklch(0.68 0.12 30)",
+          "oklch(0.79 0.07 31)",
+          "oklch(0.88 0.046 33)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display Count",
+        "purpose": "The count numeral on the Display Void panel. The single most visible element on screen. IBM Plex Mono with tabular numerals prevents layout shift during live polling."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Panel headings, dialog titles, operator panel section headers."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Display panel state labels shown above and below the count numeral. Uppercase with 0.1em tracking for legibility at arm's length."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Operator panel copy, dialog messages, config field labels."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Section eyebrows (operator, power, ชนิดชิ้นงาน). Uppercase with 0.28em tracking. Dead Label color."
+      }
+    },
+    "shadows": [
+      {
+        "name": "overlay",
+        "value": "0 25px 50px -12px rgba(0,0,0,0.25)",
+        "purpose": "Applied to floating overlays only: operator panel and confirmation dialogs. Signals the surface has lifted above the kiosk plane."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "color 100ms ease-out",
+        "purpose": "Control footer and operator panel button hover/active states."
+      },
+      {
+        "name": "state-medium",
+        "value": "color 150ms ease-out",
+        "purpose": "Fastener selector active state transition."
+      },
+      {
+        "name": "opacity-standard",
+        "value": "opacity 200ms ease-out",
+        "purpose": "Disabled state transitions on buttons."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "min-kiosk",
+        "value": "640px",
+        "purpose": "Minimum kiosk screen width. The layout does not respond below this — this is a fixed-display embedded UI."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button: Counting Light (Primary)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button in the operator panel. Counting Light fill signals confirmation or selection.",
+      "html": "<button class=\"ds-btn-primary\">เปิดไฟ</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; background: oklch(0.89 0.19 126); color: oklch(0.17 0.006 80); padding: 10px 20px; border: none; border-radius: 0.2rem; font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: background 100ms ease-out; } .ds-btn-primary:hover { background: oklch(0.85 0.19 126); } .ds-btn-primary:active { background: oklch(0.82 0.18 126); } .ds-btn-primary:focus-visible { outline: none; box-shadow: inset 0 0 0 4px oklch(0.89 0.19 126); } .ds-btn-primary:disabled { opacity: 0.50; cursor: not-allowed; }"
+    },
+    {
+      "name": "Button: Danger",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive action button. Used in confirmation dialogs for shutdown. 20px radius signals consumer-level affordance.",
+      "html": "<button class=\"ds-btn-danger\">ปิดเครื่อง</button>",
+      "css": ".ds-btn-danger { display: inline-flex; align-items: center; justify-content: center; background: oklch(0.45 0.14 28); color: oklch(0.98 0 0); padding: 10px 20px; border: none; border-radius: 1rem; font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: opacity 100ms ease-out; } .ds-btn-danger:hover { opacity: 0.88; } .ds-btn-danger:active { opacity: 0.75; } .ds-btn-danger:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.45 0.14 28 / 0.5); } .ds-btn-danger:disabled { opacity: 0.50; cursor: not-allowed; }"
+    },
+    {
+      "name": "Button: Ghost (Cancel)",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Cancel and secondary actions in dialogs. No background at rest — only hover tint.",
+      "html": "<button class=\"ds-btn-ghost\">ยกเลิก</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: oklch(0.44 0.022 78); padding: 10px 20px; border: none; border-radius: 1rem; font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: background 100ms ease-out; } .ds-btn-ghost:hover { background: rgba(0,0,0,0.05); } .ds-btn-ghost:active { background: rgba(0,0,0,0.10); } .ds-btn-ghost:focus-visible { outline: none; box-shadow: inset 0 0 0 3px oklch(0.68 0.024 82); } .ds-btn-ghost:disabled { opacity: 0.50; cursor: not-allowed; }"
+    },
+    {
+      "name": "Button: Confirm (Save / Submit)",
+      "kind": "button",
+      "refersTo": "button-confirm",
+      "description": "Save and confirm actions. Control Black fill provides clear finality. Used in both consumer dialogs and operator panel footer.",
+      "html": "<button class=\"ds-btn-confirm\">บันทึก</button>",
+      "css": ".ds-btn-confirm { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: oklch(0.17 0.006 80); color: oklch(0.96 0.009 85); padding: 10px 20px; border: none; border-radius: 0.2rem; font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: opacity 150ms ease-out; } .ds-btn-confirm:hover { opacity: 0.85; } .ds-btn-confirm:active { opacity: 0.70; } .ds-btn-confirm:focus-visible { outline: none; box-shadow: inset 0 0 0 4px oklch(0.89 0.19 126); } .ds-btn-confirm:disabled { opacity: 0.50; cursor: not-allowed; }"
+    },
+    {
+      "name": "Fastener Selector: Default",
+      "kind": "button",
+      "refersTo": "fastener-selector",
+      "description": "Full-height kiosk button for selecting part type. No border radius — fills the panel column to all edges.",
+      "html": "<button class=\"ds-fastener\" aria-pressed=\"false\"><div class=\"ds-fastener-img\"><img src=\"\" alt=\"\" /></div><span class=\"ds-fastener-label\">น็อต</span></button>",
+      "css": ".ds-fastener { display: grid; grid-template-rows: 1fr auto; width: 100%; min-height: 200px; padding: 20px 16px; background: oklch(0.91 0.018 85); color: oklch(0.17 0.006 80); border: none; border-bottom: 1px solid oklch(0.68 0.024 82); border-radius: 0; text-align: left; cursor: pointer; transition: background 150ms ease-out; outline: none; } .ds-fastener:hover { background: oklch(0.86 0.022 84); } .ds-fastener:active { background: oklch(0.80 0.026 84); } .ds-fastener:focus-visible { box-shadow: inset 0 0 0 4px oklch(0.89 0.19 126); } .ds-fastener-img { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 1; opacity: 0.85; } .ds-fastener-img img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; } .ds-fastener-label { display: block; text-align: center; font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 1.125rem; font-weight: 700; line-height: 1.3; color: oklch(0.17 0.006 80); }"
+    },
+    {
+      "name": "Fastener Selector: Active",
+      "kind": "button",
+      "refersTo": "fastener-selector-active",
+      "description": "Active/selected state of the fastener selector. Counting Light fill; image renders at full opacity without blend mode.",
+      "html": "<button class=\"ds-fastener ds-fastener--active\" aria-pressed=\"true\"><div class=\"ds-fastener-img\"><img src=\"\" alt=\"\" /></div><span class=\"ds-fastener-label\">น็อต</span></button>",
+      "css": ".ds-fastener--active { background: oklch(0.89 0.19 126); } .ds-fastener--active:hover { background: oklch(0.87 0.19 126); } .ds-fastener--active:active { background: oklch(0.82 0.18 126); } .ds-fastener--active .ds-fastener-img { opacity: 1; } .ds-fastener--active .ds-fastener-img img { mix-blend-mode: normal; }"
+    },
+    {
+      "name": "Count Display: Active",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The count result panel. Display Void background, mono count numeral in Counting Light, status labels in Verification Green.",
+      "html": "<div class=\"ds-display\"><span class=\"ds-display-label\">นับได้</span><div class=\"ds-display-count\">056</div><span class=\"ds-display-label\">ชิ้น</span></div>",
+      "css": ".ds-display { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 300px; background: oklch(0.14 0.006 95); text-align: center; padding: 16px; } .ds-display-label { font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.67 0.062 123); } .ds-display-count { font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; font-size: clamp(5rem, 11vw, 8rem); font-weight: 600; line-height: 1; color: oklch(0.89 0.19 126); font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }"
+    },
+    {
+      "name": "Count Display: Error",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Error state — full panel fill with Fault Red. Interrupts the operator at a glance.",
+      "html": "<div class=\"ds-display-error\"><span class=\"ds-display-error-label\">เครื่องขัดข้อง</span><div class=\"ds-display-error-text\">ตรวจเครื่อง</div><span class=\"ds-display-error-label\">กล้องขัดข้อง</span></div>",
+      "css": ".ds-display-error { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 300px; background: oklch(0.45 0.14 28); text-align: center; padding: 16px; } .ds-display-error-label { font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.88 0.046 33); } .ds-display-error-text { font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: clamp(2rem, 4.2vw, 3.25rem); font-weight: 900; line-height: 1.2; color: oklch(0.96 0.009 85); padding: 20px 0; max-width: 12rem; }"
+    },
+    {
+      "name": "Operator Tab Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Navigation tab in the operator panel sidebar. Active state uses Counting Light fill.",
+      "html": "<button class=\"ds-tab ds-tab--active\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\"/></svg>สถานะ</button>",
+      "css": ".ds-tab { display: flex; align-items: center; gap: 12px; width: 100%; height: 48px; padding: 0 16px; margin-bottom: 8px; border-radius: 0.2rem; border: 1px solid transparent; font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: background 100ms ease-out, border-color 100ms ease-out; background: transparent; color: oklch(0.44 0.022 78); } .ds-tab:hover { background: oklch(0.86 0.022 84); border-color: oklch(0.68 0.024 82); } .ds-tab--active { background: oklch(0.89 0.19 126); border-color: oklch(0.82 0.18 126); color: oklch(0.17 0.006 80); } .ds-tab--active:hover { background: oklch(0.87 0.19 126); } .ds-tab:focus-visible { outline: none; box-shadow: inset 0 0 0 3px oklch(0.89 0.19 126); }"
+    },
+    {
+      "name": "Stepper Field",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Glove-safe numeric incrementer. Five-cell layout: decrement large, decrement small, value display, increment small, increment large.",
+      "html": "<div class=\"ds-stepper\"><div class=\"ds-stepper-header\"><span class=\"ds-stepper-label\">Confidence</span><span class=\"ds-stepper-value-inline\">0.75</span></div><div class=\"ds-stepper-controls\"><button class=\"ds-stepper-btn\">-0.05</button><button class=\"ds-stepper-btn\">-0.01</button><div class=\"ds-stepper-display\">0.75</div><button class=\"ds-stepper-btn\">+0.01</button><button class=\"ds-stepper-btn\">+0.05</button></div></div>",
+      "css": ".ds-stepper { display: grid; gap: 8px; } .ds-stepper-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; } .ds-stepper-label { font-family: 'Noto Sans Thai', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; color: oklch(0.44 0.022 78); } .ds-stepper-value-inline { font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; font-size: 1rem; font-weight: 700; color: oklch(0.17 0.006 80); font-variant-numeric: tabular-nums; } .ds-stepper-controls { display: grid; grid-template-columns: 1fr 1fr 1.4fr 1fr 1fr; gap: 8px; } .ds-stepper-btn { height: 44px; border-radius: 0.15rem; border: 1px solid oklch(0.68 0.024 82); background: oklch(0.91 0.018 85); font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; font-size: 0.875rem; font-weight: 900; color: oklch(0.17 0.006 80); cursor: pointer; transition: background 100ms ease-out; } .ds-stepper-btn:hover { background: oklch(0.86 0.022 84); } .ds-stepper-btn:active { background: oklch(0.80 0.026 84); } .ds-stepper-display { height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 0.15rem; border: 1px solid oklch(0.68 0.024 82); background: oklch(0.96 0.009 85); font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; font-size: 1rem; font-weight: 900; color: oklch(0.17 0.006 80); font-variant-numeric: tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calibrated Scale",
+    "overview": "Nut Counter's interface is built like a precision measurement instrument that happens to run on a touchscreen. Every surface is a readout. Every control is a physical actuator. The machine is always truthful, always exact — no ornamentation survives unless it serves legibility or operation.\n\nThe layout is divided by function, not by aesthetics. The warm Factory Beige shell carries the controls: fastener selection on the left, system actions on the right. The center is surrendered entirely to the camera — a Display Void column where the count and feed live in high contrast against near-black. This two-temperature palette (warm beige outside, near-black inside) is structural, not decorative. It separates the operational surface from the measurement surface at a glance, even from across the room.\n\nThis system explicitly rejects SaaS dashboard conventions, decorative cyber interfaces, and colorful consumer UI. It is not a mobile app. Tiny touch targets, ornamental motion, unnecessary data panels, and loud saturated color are prohibited. The Counting Light accent appears only to mark what is selected or confirmed — its restraint is the point.",
+    "keyCharacteristics": [
+      "Two thermal zones: warm Factory Beige shell (controls) vs. Display Void center (measurement)",
+      "Single accent color marks selection and the live count; used nowhere else",
+      "Flat, near-zero-radius surfaces on all kiosk controls; softness reserved for consumer-facing dialogs",
+      "IBM Plex Mono for all machine-produced numbers; Noto Sans Thai for all labels and copy",
+      "Motion limited to color-only state transitions, no choreography",
+      "Glove-safe touch targets: minimum 44px height, wide padded columns, 4px inset focus rings"
+    ],
+    "rules": [
+      {
+        "name": "The One Lamp Rule",
+        "body": "Counting Light is used on exactly two things: the active selection indicator and the live count numeral. It is never used decoratively, as a background fill on non-interactive surfaces, or as a text highlight. Its scarcity is what makes it legible from across the machine.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Temperature Rule",
+        "body": "Factory Beige and Display Void are complementary zones, not competing styles. Never apply Display Void to shell or panel surfaces. Never apply Factory Beige to the display center column. The boundary between them is absolute.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono-for-Machines Rule",
+        "body": "IBM Plex Mono is reserved for numbers the machine produces or the operator configures. It never appears in headings, body copy, or navigation labels. If it is a human word, it is Thai sans; if it is a machine number, it is mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-by-Default Rule",
+        "body": "Kiosk panels are flat at rest. No shadow appears between the shell, selector column, or display center. Depth is expressed through color temperature difference and the Machine Seam border — not through shadows. The only shadows in the system are on surfaces that float above the kiosk.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use Counting Light only on the active selection state and the live count numeral.",
+      "Do use IBM Plex Mono with font-feature-settings: 'tnum' 1 for all machine-produced numbers.",
+      "Do size primary touch targets to a minimum of 44px height.",
+      "Do fill the entire display panel with Fault Red on error states — error must interrupt, not annotate.",
+      "Do use the 20px corner radius only on consumer-facing confirmation dialogs.",
+      "Do use near-zero radius (0–0.25rem) on all kiosk and operator panel surfaces.",
+      "Do communicate focus with a 4px inset Counting Light ring.",
+      "Do keep the camera feed column full-height and full-width as the visual anchor of the layout.",
+      "Do use Thai as the primary label language; reserve English for technical strings."
+    ],
+    "donts": [
+      "Don't make it look like a SaaS dashboard, a mobile app, a decorative cyber interface, or a colorful consumer UI.",
+      "Don't use tiny touch targets, dense data panels, or ornamental motion.",
+      "Don't apply gradient text, glassmorphism, hero metrics, identical card grids, or side-stripe accent borders.",
+      "Don't use more than one accent color.",
+      "Don't animate layout properties or add entrance choreography.",
+      "Don't apply Factory Beige to the display center column or Display Void to the shell panels.",
+      "Don't use IBM Plex Mono for body copy, headings, or navigation labels.",
+      "Don't round kiosk panel buttons or operator controls beyond 0.25rem.",
+      "Don't use the 20px corner radius on kiosk or operator surfaces.",
+      "Don't add color-only error states that annotate the display panel — replace the entire background with Fault Red."
+    ]
+  }
+}

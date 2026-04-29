@@ -13,16 +13,20 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
 /build
+/dist
 
 # misc
 .DS_Store
 *.pem
+.nut-counter/
+.agents/
+.claude/
+model/
+skills-lock.json
+__pycache__/
+*.py[cod]
 
 # debug
 npm-debug.log*

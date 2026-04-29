@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+set -eu
+
+arch="$(dpkg --print-architecture)"
+if [ "$arch" != "arm64" ]; then
+  echo "nut-counter supports Raspberry Pi OS 64-bit arm64 only. Found: $arch" >&2
+  exit 1
+fi
+
+if [ -r /proc/device-tree/model ]; then
+  model="$(tr -d '\0' </proc/device-tree/model)"
+  case "$model" in
+    *"Raspberry Pi 5"*) exit 0 ;;
+    *)
+      echo "Warning: expected Raspberry Pi 5, found: $model" >&2
+      ;;
+  esac
+fi
+
+exit 0

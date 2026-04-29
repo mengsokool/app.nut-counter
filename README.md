@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nut Counter
 
-## Getting Started
+Raspberry Pi nut and washer counting appliance. The production app is a React
+SPA served by a Python backend that owns config, mock hardware state, camera
+preview endpoints, and the future GPIO/camera/AI integrations.
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+src/                    React SPA source
+backend/nut_counter/    Python backend, CLI, config, static hosting
+config/                 Default appliance config
+systemd/                Backend and Firefox ESR kiosk units
+debian/DEBIAN/          Debian maintainer scripts
+scripts/                Packaging and service helper scripts
+public/                 Static machine assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build the SPA into `dist/ui`, then run the Python backend to serve both the UI
+and local API.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm dev
+pnpm dev:backend
+```
 
-## Learn More
+Open [http://localhost:5173](http://localhost:5173) for Vite dev or
+[http://localhost:8787](http://localhost:8787) when testing the backend-served
+build.
 
-To learn more about Next.js, take a look at the following resources:
+## Checks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm build
+pnpm lint
+pnpm typecheck
+pnpm test:backend
+pnpm package:dry-run
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## CI/CD
 
-## Deploy on Vercel
+GitHub Actions runs the full check suite on pull requests and pushes to `main`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+lint -> typecheck -> backend tests -> UI build -> package dry-run
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The CI workflow also builds an arm64 Debian package and uploads it as a workflow
+artifact:
+
+```text
+build/nut-counter_<version>_arm64.deb
+```
+
+To publish a GitHub Release with the `.deb` attached, push a version tag:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+You can also run the `Release` workflow manually from GitHub Actions and provide
+a version number.

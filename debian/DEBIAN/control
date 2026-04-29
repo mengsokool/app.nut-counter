@@ -1,0 +1,9 @@
+Package: nut-counter
+Version: 0.1.0
+Section: misc
+Priority: optional
+Architecture: arm64
+Maintainer: Nut Counter Team <root@localhost>
+Depends: python3, python3-numpy, curl, firefox-esr
+Description: Raspberry Pi nut and washer counting appliance
+ React SPA and Python backend for GPIO, camera, AI, kiosk UI, and provisioning.

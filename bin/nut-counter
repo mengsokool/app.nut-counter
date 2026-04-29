@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+from nut_counter.cli import main
+
+main()

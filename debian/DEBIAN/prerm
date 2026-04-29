@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -eu
+
+systemctl stop nut-counter-kiosk.service >/dev/null 2>&1 || true
+systemctl stop nut-counter-backend.service >/dev/null 2>&1 || true
+systemctl disable nut-counter-kiosk.service >/dev/null 2>&1 || true
+systemctl disable nut-counter-backend.service >/dev/null 2>&1 || true
+
+exit 0

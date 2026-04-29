@@ -1,0 +1,22 @@
+[Unit]
+Description=Nut Counter backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nut-counter
+Group=nut-counter
+Environment=PYTHONPATH=/opt/nut-counter/backend
+Environment=NUT_COUNTER_CONFIG=/etc/nut-counter/config.json
+Environment=NUT_COUNTER_UI_DIR=/opt/nut-counter/ui
+ExecStart=/usr/bin/python3 -m nut_counter.server --host 127.0.0.1 --port 8787 --ui-dir /opt/nut-counter/ui
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ReadWritePaths=/etc/nut-counter /var/lib/nut-counter /var/log/nut-counter
+
+[Install]
+WantedBy=multi-user.target

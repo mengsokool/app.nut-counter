@@ -3,24 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "vite --host 0.0.0.0",
+    "dev:backend": "PYTHONPATH=backend python3 -m nut_counter.server",
+    "build": "vite build",
+    "check": "pnpm lint && pnpm typecheck && pnpm test:backend",
+    "lint": "eslint",
+    "package:assemble": "scripts/assemble-package.sh",
+    "package:deb": "scripts/build-deb.sh",
+    "package:dry-run": "scripts/package-dry-run.sh",
+    "start": "PYTHONPATH=backend python3 -m nut_counter.server --ui-dir dist/ui",
+    "test:backend": "PYTHONPATH=backend python3 -m unittest discover -s backend/tests",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "next": "16.2.1",
+    "lucide-react": "^0.577.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.5.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.59.1",
+    "vite": "^7.3.0"
   }
 }

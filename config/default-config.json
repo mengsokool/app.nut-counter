@@ -1,0 +1,38 @@
+{
+  "gpio": {
+    "tray_sensor_pin": 17,
+    "relay_pin": 27,
+    "active_low": false,
+    "debounce_ms": 80
+  },
+  "camera": {
+    "source": "auto",
+    "device": "",
+    "width": 1280,
+    "height": 1280,
+    "warmup_frames": 5,
+    "exposure_mode": "auto",
+    "flip_horizontal": false,
+    "flip_vertical": false
+  },
+  "model": {
+    "engine": "mock",
+    "model_path": "",
+    "hef_path": "/var/lib/nut-counter/models/yolo11n.hef",
+    "labels_path": "/var/lib/nut-counter/models/labels.json",
+    "inference_command": [],
+    "confidence_threshold": 0.45,
+    "nms_threshold": 0.5
+  },
+  "counting": {
+    "stable_frames": 5,
+    "timeout_ms": 2500,
+    "selected_part_type": "nut"
+  },
+  "kiosk": {
+    "browser": "firefox-esr",
+    "url": "http://127.0.0.1:8787",
+    "profile_path": "/var/lib/nut-counter/firefox-profile"
+  },
+  "safe_mode": false
+}
