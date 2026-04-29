@@ -7,6 +7,7 @@ import mimetypes
 import os
 import queue
 import statistics
+import subprocess
 import threading
 import time
 from concurrent.futures import TimeoutError as FutureTimeoutError
@@ -449,7 +450,25 @@ def create_handler(runtime: NutCounterRuntime) -> type[BaseHTTPRequestHandler]:
                     self.send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
                 return
             if path in {"/api/system/shutdown", "/api/system/reboot"}:
-                self.send_json({"success": False, "needsAuth": True})
+                payload = self.read_json(default={})
+                pwd = payload.get("password")
+                if not pwd and deps_mod.sudo_needs_password():
+                    self.send_json({"success": False, "needsAuth": True})
+                    return
+                cmd = ["sudo", "-n", "systemctl", "poweroff" if path == "/api/system/shutdown" else "reboot"]
+                if pwd and deps_mod.sudo_needs_password():
+                    cmd = ["sudo", "-S", "systemctl", "poweroff" if path == "/api/system/shutdown" else "reboot"]
+                try:
+                    subprocess.Popen(
+                        cmd,
+                        stdin=subprocess.PIPE if pwd else subprocess.DEVNULL,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        text=True,
+                    ).communicate(input=f"{pwd}\n" if pwd else None)
+                    self.send_json({"success": True})
+                except Exception as e:
+                    self.send_json({"success": False, "error": str(e)})
                 return
             if path == "/api/doctor/install":
                 self.send_install_stream()

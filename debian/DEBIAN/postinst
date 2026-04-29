@@ -15,6 +15,11 @@ install -d -o nut-counter -g nut-counter /etc/nut-counter /var/lib/nut-counter/m
 install -d -o nut-counter -g nut-counter /var/lib/nut-counter/firefox-profile
 chown -R nut-counter:nut-counter /var/lib/nut-counter
 
+if [ -d /etc/sudoers.d ]; then
+  echo "nut-counter ALL=(root) NOPASSWD: /usr/bin/apt-get, /sbin/shutdown, /sbin/reboot, /bin/systemctl poweroff, /bin/systemctl reboot" > /etc/sudoers.d/nut-counter
+  chmod 0440 /etc/sudoers.d/nut-counter
+fi
+
 if [ ! -f /etc/nut-counter/config.json ]; then
   install -m 0640 -o nut-counter -g nut-counter /opt/nut-counter/config/default-config.json /etc/nut-counter/config.json
 else
