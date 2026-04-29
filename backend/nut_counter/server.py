@@ -74,6 +74,15 @@ class NutCounterRuntime:
         self._async_thread.start()
 
         self.webrtc = StreamingWebRTC(self.hardware.frame_source.bus, self._async_loop)
+
+        self.state = SystemState(
+            safeMode=self._should_enable_safe_mode(self.hardware),
+            selectedPartType=self.config.counting.selected_part_type,
+            camera=self.hardware.frame_source.status,
+            model=self.hardware.inference.status,
+            gpio=self.hardware.gpio.status,
+        )
+
         self.ai_worker = AIWorker(
             frame_bus=self.hardware.frame_source.bus,
             engine=self.hardware.inference,
@@ -83,13 +92,6 @@ class NutCounterRuntime:
         )
         self.ai_worker.start()
 
-        self.state = SystemState(
-            safeMode=self._should_enable_safe_mode(self.hardware),
-            selectedPartType=self.config.counting.selected_part_type,
-            camera=self.hardware.frame_source.status,
-            model=self.hardware.inference.status,
-            gpio=self.hardware.gpio.status,
-        )
         self.hardware.gpio.set_light(False)
         self._worker = threading.Thread(target=self._poll_hardware, daemon=True)
         self._worker.start()
