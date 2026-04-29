@@ -1,6 +1,7 @@
 [Unit]
 Description=Nut Counter Firefox ESR kiosk
-After=nut-counter-backend.service systemd-user-sessions.service graphical.target
+After=nut-counter-backend.service systemd-logind.service systemd-user-sessions.service graphical.target
+Wants=systemd-logind.service
 Requires=nut-counter-backend.service
 
 [Service]
@@ -17,10 +18,13 @@ TTYReset=yes
 TTYVHangup=yes
 TTYVTDisallocate=yes
 
+# Switch physical monitor to TTY7 automatically (run as root via + prefix)
+ExecStartPre=+/usr/bin/chvt 7
+
 ExecStartPre=/opt/nut-counter/scripts/wait-for-backend.sh http://127.0.0.1:8787/api/status
 ExecStart=/usr/bin/cage -s -- /usr/bin/firefox-esr --kiosk http://127.0.0.1:8787 --profile /var/lib/nut-counter/firefox-profile
 Restart=always
 RestartSec=3
 
 [Install]
-WantedBy=graphical.target
+WantedBy=graphical.target multi-user.target
