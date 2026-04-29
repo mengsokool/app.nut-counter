@@ -281,8 +281,6 @@ class _FFmpegRawSource(FrameSource):
     def __init__(self, config: CameraConfig) -> None:
         super().__init__(config)
         self._closed = False
-        self._idle = False
-        self._mode_lock = threading.Lock()
         self._proc: subprocess.Popen | None = None  # type: ignore[type-arg]
         self._thread: threading.Thread | None = None
         self._np = _try_numpy()
@@ -315,18 +313,6 @@ class _FFmpegRawSource(FrameSource):
     @abstractmethod
     def _ffmpeg_command(self, fps: int) -> list[str]: ...
 
-    def _current_fps(self) -> int:
-        with self._mode_lock:
-            return self.config.idle_fps if self._idle else self.config.fps
-
-    def set_idle_mode(self, idle: bool) -> None:
-        with self._mode_lock:
-            if self._idle == idle:
-                return
-            self._idle = idle
-            fps = self.config.idle_fps if idle else self.config.fps
-        print(f"[{self.label}] {'idle' if idle else 'active'} capture {fps} fps", flush=True)
-
     # main loop --------------------------------------------------------------
     def _run(self) -> None:
         side, _ = square_frame_size(self.config)
@@ -340,7 +326,6 @@ class _FFmpegRawSource(FrameSource):
         backoff = 0.5
         fps_count = 0
         fps_started = time.monotonic()
-        next_capture = 0.0
         while not self._closed:
             frames_seen = 0
             stderr_tail: list[str] = []
@@ -370,13 +355,6 @@ class _FFmpegRawSource(FrameSource):
                     while len(buf) >= bytes_per_frame:
                         raw = bytes(buf[:bytes_per_frame])
                         del buf[:bytes_per_frame]
-
-                        current_fps = self._current_fps()
-                        if current_fps < self.config.fps:
-                            now = time.monotonic()
-                            if now < next_capture:
-                                continue
-                            next_capture = now + (1.0 / current_fps)
 
                         # Make a writable copy so downstream consumers
                         # (cv2.resize, av.VideoFrame.from_ndarray) never get
@@ -544,8 +522,6 @@ class PiCameraFrameSource(FrameSource):
         self._np = _try_numpy()
         self._camera: Any = None
         self._closed = False
-        self._idle = False
-        self._mode_lock = threading.Lock()
         self._thread: threading.Thread | None = None
 
         if self._np is None:
@@ -587,19 +563,11 @@ class PiCameraFrameSource(FrameSource):
         np = self._np
         assert np is not None
         camera = self._camera
-        next_capture = 0.0
         while not self._closed:
             try:
                 arr = camera.capture_array("main")
                 if arr is None:
                     continue
-
-                current_fps = self._current_fps()
-                if current_fps < self.config.fps:
-                    now = time.monotonic()
-                    if now < next_capture:
-                        continue
-                    next_capture = now + (1.0 / current_fps)
 
                 # picamera2 with format="BGR888" yields BGR; if shape isn't 3-channel
                 # something unexpected happened — drop the frame.
@@ -610,14 +578,6 @@ class PiCameraFrameSource(FrameSource):
                 self.status = "error"
                 self.detail = str(error)
                 time.sleep(0.5)
-
-    def _current_fps(self) -> int:
-        with self._mode_lock:
-            return self.config.idle_fps if self._idle else self.config.fps
-
-    def set_idle_mode(self, idle: bool) -> None:
-        with self._mode_lock:
-            self._idle = idle
 
     def close(self) -> None:
         self._closed = True
