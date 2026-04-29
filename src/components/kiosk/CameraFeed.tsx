@@ -189,9 +189,12 @@ export default function CameraFeed({ trayPresent }: { trayPresent: boolean }) {
     const draw = () => {
       const w = video.clientWidth;
       const h = video.clientHeight;
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
+      const dpr = window.devicePixelRatio || 1;
+
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
       }
       ctx.clearRect(0, 0, w, h);
 

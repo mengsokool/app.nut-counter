@@ -11,6 +11,7 @@ Group=nut-counter
 PAMName=login
 Environment=HOME=/var/lib/nut-counter
 Environment=MOZ_ENABLE_WAYLAND=1
+Environment=MOZ_WEBRENDER=1
 Environment=WLR_LIBINPUT_NO_DEVICES=1
 
 # TTY settings for Wayland compositor (cage)
